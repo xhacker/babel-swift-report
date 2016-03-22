@@ -4,7 +4,7 @@ This is my undergraduate thesis.
 
 ## Thesis Template
 
-This thesis uses the LaTeX template from [`sfuthesis` project](https://github.com/rchurchley/sfuthesis).
+This thesis uses the LaTeX template from [**sfuthesis**](https://github.com/rchurchley/sfuthesis) project.
 
 ## TODO
 

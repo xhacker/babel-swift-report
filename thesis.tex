@@ -1,0 +1,128 @@
+\documentclass{sfuthesis}
+
+\title{An example of a thesis or dissertation on the subject of your degree}
+\thesistype{Dissertation}
+\author{Stuart Arthur Dent}
+\previousdegrees{%
+	M.Sc., Wossamotta University, 1963\\
+	B.Sc., Unseen University, 1836}
+\degree{Doctor of Philosophy}
+\discipline{Mathematics}
+\department{Department of Inadvisably Applied Mathematics}
+\faculty{Faculty of Mad Science}
+\copyrightyear{2015}
+\semester{Fall 2015}
+\date{1 September 2015}
+
+\keywords{Thesis template; Simon Fraser University; time travel paradoxes}
+
+\committee{%
+	\chair{Pamela Isely}{Professor}
+	\member{Emmett Brown}{Senior Supervisor\\Professor}
+	\member{Bonnibel Bubblegum}{Supervisor\\Associate Professor}
+	\member{James Moriarty}{Supervisor\\Adjunct Professor}
+	\member{Kaylee Frye}{Internal Examiner\\Assistant Professor\\School of Engineering Science}
+	\member{Hubert J.\ Farnsworth}{External Examiner\\Professor\\Department of Quantum Fields\\Mars University}
+}
+
+%   PACKAGES AND CUSTOMIZATIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Add any packages or custom commands you need for your thesis here.
+%   You don't need to call the following packages, which are already called in
+%   the sfuthesis class file:
+%
+%   - appendix
+%   - etoolbox
+%   - fontenc
+%   - geometry
+%   - lmodern
+%   - nowidow
+%   - setspace
+%   - tocloft
+%
+%   If you call one of the above packages (or one of their dependencies) with
+%   options, you may get a "Option clash" LaTeX error. If you get this error,
+%   you can fix it by removing your copy of \usepackage and passing the options
+%   you need by adding
+%
+%       \PassOptionsToPackage{<options>}{<package>}
+%
+%   before \documentclass{sfuthesis}.
+%
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage{graphicx}
+\usepackage{caption}
+
+
+
+
+
+
+%   FRONTMATTER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Title page, committee page, copyright declaration, abstract,
+%   dedication, acknowledgements, table of contents, etc.
+%
+
+\begin{document}
+
+\frontmatter
+\maketitle{}
+\makecommittee{}
+
+\begin{abstract}
+	This is a blank document from which you can start writing your thesis.
+\end{abstract}
+
+
+\begin{dedication} % optional
+\end{dedication}
+
+
+\begin{acknowledgements} % optional
+\end{acknowledgements}
+
+\addtoToC{Table of Contents}\tableofcontents\clearpage
+\addtoToC{List of Tables}\listoftables\clearpage
+\addtoToC{List of Figures}\listoffigures
+
+
+
+
+
+%   MAIN MATTER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Start writing your thesis --- or start \include ing chapters --- here.
+%
+
+\mainmatter%
+
+\chapter{Introduction}
+
+
+
+
+
+%   BACK MATTER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   References and appendices. Appendices come after the bibliography and
+%   should be in the order that they are referred to in the text.
+%
+%   If you include figures, etc. in an appendix, be sure to use
+%
+%       \caption[]{...}
+%
+%   to make sure they are not listed in the List of Figures.
+%
+
+\backmatter%
+	\addtoToC{Bibliography}
+	\bibliographystyle{plain}
+	\bibliography{references}
+
+\begin{appendices} % optional
+	\chapter{Code}
+\end{appendices}
+\end{document}

@@ -1,6 +1,6 @@
 \documentclass{sfuthesis}
 
-\title{An Objective-C to Swift Transformation Tool}
+\title{Babel Swift: An Objective-C to Swift Conversion Tool}
 \thesistype{Dissertation}
 \author{Dongyuan Liu}
 \degree{Bachelor of Science}
@@ -51,6 +51,7 @@
 \usepackage[pdfborder={0 0 0}]{hyperref}
 \usepackage{graphicx}
 \usepackage{caption}
+\usepackage{listings}
 
 
 
@@ -70,7 +71,7 @@
 \makecommittee{}
 
 \begin{abstract}
-Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This thesis introduces a new transformation tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets, including functions, code blocks, and statements. The features of our tool include converting incomplete code snippets with undefined identifiers, as well as generating Swift-only syntax. We also evaluate the transformation tool by comparing with other existing tools.
+Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This paper introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets, including functions, code blocks, and statements. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. Furthermore, Babel Swift could generate Swift-only syntax. At last, we evaluate Babel Swift by comparing with other existing tools.
 \end{abstract}
 
 
@@ -98,17 +99,50 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 
 \chapter{Introduction}
 
-\chapter{Background}
-
 \section{Objective-C and Swift}
 
-\section{Existing Objective-C to Swift Transformation Tools}
+Objective-C is an object-oriented programming language. It's the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced the new Swift language, which is being designed to replace Objective-C for building iOS and OS X apps.
+
+\section{Existing Objective-C to Swift Conversion Tools}
+
+Considering there are a lot of Objective-C code on Apple platforms, there is a high demand for Objective-C to Swift conversion tools. \emph{objc2swift} \cite{objc2swift} is an open-source conversion tool. \emph{Swiftify} \cite{swiftify} and \emph{iSwift} \cite{iswift} are two commercial conversion tools.
+
+These conversion tools are all designed for transform complete code or complete projects. They cannot handle incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet on Stackoverflow, and wants to use it in a Swift project.
+
+\section{Introducing Babel Swift}
+
+This paper introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift was designed for handling incomplete code snippets. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on \emph{libclang} \cite{libclang}.
+
+% TODO: other features?
 
 \chapter{Objectives and Implementation}
 
-\section{Handling Code Snippets}
+\section{Overall Design}
 
-\section{Generating Swift-only Syntax}
+\section{Handling Incomplete Code Snippets}
+
+A \emph{code snippet} is a piece of code. An \emph{incomplete code snippet} is a piece of code which contains undefined identifiers. For example, the following Objective-C code snippet is an incomplete code snippet,
+
+\lstset{language=[Objective]C, caption={An Incomplete Code Snippet}, breaklines=true}
+\begin{lstlisting}[frame=single]
+if (speed == 88) {
+    TimeMachine *timeMachine = [[TimeMachine alloc] init];
+    [timeMachine run];
+}
+\end{lstlisting}
+
+% TODO: chained property access
+
+\section{Generating Swift-specific Code}
+
+\section{Improving \texttt{libclang}}
+
+% TODO: Using PCH for better performance
+
+\section{Remaining Issues}
+
+% TODO: comments
+% TODO: type inference
 
 \chapter{Evaluation}
 

@@ -117,7 +117,9 @@ The limitation of the existing conversion tools is that they are all designed fo
 
 This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift was designed for handling incomplete code snippets. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
 
-% TODO: other features?
+\section{Organization of this Thesis}
+
+The rest of this thesis is organized as follows. We first describe the objectives and implementation in Chapter 2. We briefly discuss the alternative designs in Chapter 3. In Chapter 4, we evaluate our conversion tool, and compare it with other existing tools. In Chapter 5, we conclude the thesis.
 
 \chapter{Objectives and Implementation}
 

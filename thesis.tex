@@ -214,7 +214,34 @@ BABEL_SWIFT_SOME_TYPE speed;
 
 \section{Generating Swift-specific Code}
 
-Swift types
+Swift have a different set of data types than Objective-C. We use mappings to convert basic data types. Because it's allowed to use C types in Objective-C, we also have mappings to C types.
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+{\bf Objective-C \cite{objcdatatypes}} & {\bf Swift \cite{swiftdatatypes}} & \specialcell{{\bf Size in 32/64-bit}\\{\bf runtime (bytes)}} \\
+\hline
+char       & Int8   & 1 / 1 \\
+BOOL, bool & Int8   & 1 / 1 \\
+short      & Int16  & 2 / 2 \\
+int        & Int32  & 4 / 4 \\
+long       & Int    & 4 / 8 \\
+long long  & Int64  & 8 / 8 \\
+size\_t    & Int    & 4 / 8 \\
+time\_t    & Int    & 4 / 8 \\
+NSInteger  & Int    & 4 / 8 \\
+NSUInteger & Int    & 4 / 8 \\
+float      & Float  & 4 / 4 \\
+double     & Double & 8 / 8 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Mappings for basic data types}
+\end{table}
 
 method renaming
 

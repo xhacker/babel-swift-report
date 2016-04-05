@@ -114,19 +114,62 @@ These conversion tools are all designed for transform complete code or complete 
 
 \section{Introducing Babel Swift}
 
-This paper introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift was designed for handling incomplete code snippets. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on \emph{libclang} \cite{libclang}.
+This paper introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift was designed for handling incomplete code snippets. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}.
 
 % TODO: other features?
 
 \chapter{Objectives and Implementation}
 
+Babel Swift is an Objective-C to Swift code conversion tool. It has two main objectives -- converting incomplete code snippets, and generating Swift-specific code.
+
 \section{Overall Design}
+
+Babel Swift is written in Python, based on libclang \cite{libclang} and its Python binding. libclang is a C interface to Clang \cite{clang}, which is a C language family frontend for LLVM. libclang provides a small API for parsing source code and accessing the parsed abstract syntax tree (AST). By using Clang as the parser, we can focus on improving the conversion.
+
+In libclang, a \emph{cursor} represent a location within the AST. Our transform function takes a cursor as input, and outputs the converted Swift code. For each cursor, the transform function traverses all the children and transform them recursively.
+
+\section{Handling Code Snippets}
+
+In this paper, we use the term \emph{code snippet} to represent a piece of code \emph{within} a function. A code snippet consists of one or more statements. An example of Objective-C \emph{code snippet} would be (\texttt{NSPopover} is a class in \emph{AppKit}, a foundational framework used in Mac development):
+
+\lstset{language=[Objective]C, caption={A code snippet}, breaklines=true}
+\begin{lstlisting}[frame=single]
+NSInteger answer = 42;
+if (answer == 42) {
+    NSPopover *popover = [[NSPopover alloc] init];
+    [popover run];
+}
+\end{lstlisting}
+
+Although it seems to be easy to handle code snippets, libclang refuses to parse them. For Objective-C, libclang expects the input to be a complete source file. To overcome this limitation, Babel Swift wraps the input code snippet into a complete source file. In the example above, the wrapped input for libclang is:
+
+\lstset{language=[Objective]C, caption={A complete source file containing the snippet}, breaklines=true}
+\begin{lstlisting}[frame=single]
+#import <AppKit/AppKit.h>
+#import "BabelSwiftHeader.h"
+
+@implementation __BABEL_SWIFT_WRAPPER_CLASS__
+
+- (id)__BABEL_SWIFT_WRAPPER_METHOD__ {
+
+NSInteger answer = 42;
+if (answer == 42) {
+    NSPopover *popover = [[NSPopover alloc] init];
+    [popover run];
+}
+
+}
+
+@end
+\end{lstlisting}
+
+We use a special class name \texttt{\_\_BABEL\_SWIFT\_WRAPPER\_CLASS\_\_} and a special method name \texttt{\_\_BABEL\_SWIFT\_WRAPPER\_METHOD\_\_} to wrap the snippet. We also import two headers. \texttt{AppKit/AppKit.h} contains many fundamental declarations in Cocoa, e.g. \texttt{NSInteger} and \texttt{NSDictionary}. \texttt{BabelSwiftHeader.h} is for handling \emph{incomplete code snippets}, which will be elaborated in the next section.
 
 \section{Handling Incomplete Code Snippets}
 
-A \emph{code snippet} is a piece of code. An \emph{incomplete code snippet} is a piece of code which contains undefined identifiers. For example, the following Objective-C code snippet is an incomplete code snippet,
+We define an \emph{incomplete code snippet} as a code snippet which contains undefined identifiers. For example, the following Objective-C code snippet is an \emph{incomplete code snippet}, because both \texttt{speed} and \texttt{TimeMachine} are undefined identifiers.
 
-\lstset{language=[Objective]C, caption={An Incomplete Code Snippet}, breaklines=true}
+\lstset{language=[Objective]C, caption={An incomplete code snippet}, breaklines=true}
 \begin{lstlisting}[frame=single]
 if (speed == 88) {
     TimeMachine *timeMachine = [[TimeMachine alloc] init];
@@ -134,20 +177,39 @@ if (speed == 88) {
 }
 \end{lstlisting}
 
-% TODO: chained property access
+chained property access
 
 \section{Generating Swift-specific Code}
 
-\section{Improving \texttt{libclang}}
+Swift types
+
+method renaming
+
+for loop
+
+others (++, selector)
+
+\section{Improving libclang}
+
+Although libclang provides a set of methods for accessing the AST, it's implementation is incomplete.
+
+unexposed
+
+information in cursor
 
 % TODO: Using PCH for better performance
 
 \section{Remaining Issues}
 
-% TODO: comments
-% TODO: type inference
+comments
+
+type inference
+
+macros
 
 \chapter{Evaluation}
+
+\chapter{Alternative Designs}
 
 \chapter{Conclusion}
 

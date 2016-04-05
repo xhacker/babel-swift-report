@@ -105,17 +105,19 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 
 \section{Objective-C and Swift}
 
-Objective-C is an object-oriented programming language. It's the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced the new Swift language, which is being designed to replace Objective-C for building iOS and OS X apps.
+Objective-C is an object-oriented programming language. It's the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Because of the its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the second trending language. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, and 11,138 Swift repositories according to GitHut \cite{githut}.
 
 \section{Objective-C to Swift Conversion Tools}
 
-Considering there are a lot of Objective-C code on Apple platforms, there is a high demand for Objective-C to Swift conversion tools. There are some existing conversion tools objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
+In a Swift project, programmers may want to use existing Objective-C code. Although Objective-C and Swift files can coexist in a single project \cite{swiftandobjc}, it's not possible to use Objective-C directly in a Swift source file. To overcome this limitation, programmers usually convert Objective-C code to Swift by hand. However, this manual process is not only time consuming, but also error-prone. Objective-C to Swift conversion tools provide a safe and convenient solution to this problem. 
 
-The limitation of the existing conversion tools is that they are all designed for transform complete code or complete projects. They cannot handle incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet on Stackoverflow, and wants to use it in a Swift project.
+There are some existing conversion tools: objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
+
+The limitation of the existing conversion tools is that they are all designed for converting complete source files or complete projects. They cannot handle incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet on Stack Overflow, and wants to use it in a Swift project.
 
 \section{Introducing Babel Swift}
 
-This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift was designed for handling incomplete code snippets. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
+This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift is designed for handling incomplete code snippets with undefined identifiers. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
 
 \section{Organization of this Thesis}
 

@@ -74,7 +74,7 @@ Attribution-NonCommercial-ShareAlike 4.0 International
 \makecommittee{}
 
 \begin{abstract}
-Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This paper introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets, including functions, code blocks, and statements. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. Furthermore, Babel Swift could generate Swift-only syntax. At last, we evaluate Babel Swift by comparing with other existing tools.
+Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. Furthermore, Babel Swift could generate Swift-only syntax. In the thesis, we describes the design and implementation of Babel Swift. We also evaluate Babel Swift by comparing with other existing tools.
 \end{abstract}
 
 
@@ -107,15 +107,15 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 
 Objective-C is an object-oriented programming language. It's the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced the new Swift language, which is being designed to replace Objective-C for building iOS and OS X apps.
 
-\section{Existing Objective-C to Swift Conversion Tools}
+\section{Objective-C to Swift Conversion Tools}
 
-Considering there are a lot of Objective-C code on Apple platforms, there is a high demand for Objective-C to Swift conversion tools. objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
+Considering there are a lot of Objective-C code on Apple platforms, there is a high demand for Objective-C to Swift conversion tools. There are some existing conversion tools objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
 
-These conversion tools are all designed for transform complete code or complete projects. They cannot handle incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet on Stackoverflow, and wants to use it in a Swift project.
+The limitation of the existing conversion tools is that they are all designed for transform complete code or complete projects. They cannot handle incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet on Stackoverflow, and wants to use it in a Swift project.
 
 \section{Introducing Babel Swift}
 
-This paper introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift was designed for handling incomplete code snippets. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
+This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift was designed for handling incomplete code snippets. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
 
 % TODO: other features?
 
@@ -237,18 +237,18 @@ Swift have a different set of data types than Objective-C. We use mappings to co
 \hline
 {\bf Objective-C \cite{objcdatatypes}} & {\bf Swift \cite{swiftdatatypes}} & \specialcell{{\bf Size in 32/64-bit}\\{\bf runtime (bytes)}} \\
 \hline
-char       & Int8   & 1 / 1 \\
-BOOL, bool & Int8   & 1 / 1 \\
-short      & Int16  & 2 / 2 \\
-int        & Int32  & 4 / 4 \\
-long       & Int    & 4 / 8 \\
-long long  & Int64  & 8 / 8 \\
-size\_t    & Int    & 4 / 8 \\
-time\_t    & Int    & 4 / 8 \\
-NSInteger  & Int    & 4 / 8 \\
-NSUInteger & Int    & 4 / 8 \\
-float      & Float  & 4 / 4 \\
-double     & Double & 8 / 8 \\
+\texttt{char}       & \texttt{Int8}   & 1 / 1 \\
+\texttt{BOOL}, \texttt{bool} & \texttt{Int8}   & 1 / 1 \\
+\texttt{short}      & \texttt{Int16}  & 2 / 2 \\
+\texttt{int}        & \texttt{Int32}  & 4 / 4 \\
+\texttt{long}       & \texttt{Int}    & 4 / 8 \\
+\texttt{long long}  & \texttt{Int64}  & 8 / 8 \\
+\texttt{size\_t}    & \texttt{Int}    & 4 / 8 \\
+\texttt{time\_t}    & \texttt{Int}    & 4 / 8 \\
+\texttt{NSInteger}  & \texttt{Int}    & 4 / 8 \\
+\texttt{NSUInteger} & \texttt{Int}    & 4 / 8 \\
+\texttt{float}      & \texttt{Float}  & 4 / 4 \\
+\texttt{double}     & \texttt{Double} & 8 / 8 \\
 \hline
 \end{tabular}
 \end{center}

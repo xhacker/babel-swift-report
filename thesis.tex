@@ -113,7 +113,7 @@ In a Swift project, programmers may want to use existing Objective-C code. Altho
 
 There are some existing conversion tools: objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
 
-The limitation of the existing conversion tools is that they are all designed for converting complete source files or complete projects. They cannot handle incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet on Stack Overflow, and wants to use it in a Swift project.
+The limitation of the existing conversion tools is that they are all designed for converting complete source files or complete projects. They have very limited support for incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet on Stack Overflow, and wants to use it in a Swift project.
 
 \section{Introducing Babel Swift}
 
@@ -348,6 +348,8 @@ Evaluating a code conversion tool is difficult, because there are no obvious met
 
 \chapter{Conclusion}
 
+This thesis presents the design and implementation for a new Objective-C to Swift conversion tool. The key features of our tool include the ability to convert incomplete code snippets, as well as generating Swift-specific code. In the thesis, we describe the techniques we used to achieve the objectives. We also briefly discuss some alternative designs and their pros and cons. In the future, this tool could be improved to support comments. Another improvement is to support converting larger forms of code including functions and classes.
+One key contribution of this thesis is the implementation of the design. The implementation is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that this is the best tool for converting code snippets among the tools we evaluated.
 
 
 %   BACK MATTER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

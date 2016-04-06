@@ -78,11 +78,13 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 \end{abstract}
 
 
-\begin{dedication} % optional
-\end{dedication}
+%\begin{dedication} % optional
+%\end{dedication}
 
 
 \begin{acknowledgements} % optional
+%Foremost, I would like thank my supervisor Dr. Thomas Shermer for his  earnest support.
+
 \end{acknowledgements}
 
 \addtoToC{Table of Contents}\tableofcontents\clearpage
@@ -121,7 +123,7 @@ This thesis introduces Babel Swift, a new conversion tool for converting Objecti
 
 \section{Organization of this Thesis}
 
-The rest of this thesis is organized as follows. We first describe the objectives and implementation in Chapter 2. We briefly discuss the alternative designs in Chapter 3. In Chapter 4, we evaluate our conversion tool, and compare it with other existing tools. In Chapter 5, we conclude the thesis.
+The rest of this thesis is organized as follows. We first describe the objectives and implementation in Chapter 2. We briefly discuss the alternative approaches in Chapter 3. In Chapter 4, we evaluate our conversion tool, and compare it with other existing tools. In Chapter 5, we conclude the thesis.
 
 \chapter{Objectives and Implementation}
 
@@ -265,7 +267,11 @@ After wrapping the snippet into a complete file and fixing all the errors, we us
 
 \section{Generating Swift-specific Code}
 
-Swift have a different set of data types than Objective-C. We use mappings to convert basic data types. Because it's allowed to use C types in Objective-C, we also have mappings to C types.
+The transformations for most of the cursor types are just concatenating results for children cursors in different ways. There are a few special cases need different strategies.
+
+\subsection{Data Types}
+
+Swift have a different set of data types than Objective-C. We use mappings to convert basic data types. Because it's allowed to use C types in Objective-C, we also have mappings to C types. Once we see a Objective-C or C data types in the mapping, we use the Swift counterpart in the output.
 
 \newcommand{\specialcell}[2][c]{%
   \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
@@ -294,41 +300,93 @@ Swift have a different set of data types than Objective-C. We use mappings to co
 \caption{Mappings for basic data types}
 \end{table}
 
-% TODO: method renaming
+\subsection{Method Calls}
 
-% TODO: for loop
+In Objective-C, the syntax for method calls is a little special compared to other C-like languages. For example, the following code would call \texttt{- insertSubview:atIndex:} with parameters \texttt{mySubview} and \texttt{2}.
 
-% TODO: others (++, selector)
+\begin{minted}{objc}
+[view insertSubview:mySubview atIndex:2];
+\end{minted}
 
-\section{Improving libclang}
+Swift uses dot syntax for method calls. The counterpart in Swift is much more like in other languages \cite{swiftobjcapis}:
 
-Although libclang provides a set of methods for accessing the AST, it's implementation is incomplete.
+\begin{minted}{swift}
+view.insertSubview(mySubview, atIndex: 2)
+\end{minted}
 
-unexposed
+Babel Swift could recognize method calls in Objective-C, extract the method signatures and arguments, and convert them to Swift method calls.
 
-information in cursor
+\subsection{Initialization}
+
+In Objective-C, class initializers begin with \texttt{init}, or \texttt{initWith:} if it takes arguments. You also need to call \texttt{alloc} explicitly when initializing an object. A complete object initialization in Objective-C is like:
+
+\begin{minted}{objc}
+UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero
+    style:UITableViewStyleGrouped];
+\end{minted}
+
+In Swift, the \texttt{init} or \texttt{initWith:} is removed. You also don't need to call \texttt{alloc} anymore. The object initialization becomes:
+
+\begin{minted}{swift}
+let tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
+\end{minted}
+
+\subsection{\texttt{for} Loops}
+
+\texttt{for} loops are widely used in Objective-C. A typical \texttt{for} loop in Objective-C is like:
+
+\begin{listing}[H]
+\caption{A typical Objective-C \texttt{for} loop}
+\label{lst:forloop}
+\begin{minted}{objc}
+for (int index = 0; index < array.count; index++) {
+    NSLog(@"%@", array[index]);
+}
+\end{minted}
+\end{listing}
+
+In Swift, however, C-style \texttt{for} loops are deprecated and will be removed completely in Swift 3.0 \cite{removecforloops}. To follow the best practice in Swift, Babel Swift would generate the following Swift code for the above \texttt{for} loop:
+
+\begin{listing}[H]
+\caption{Swift code converted from listing \ref{lst:forloop}}
+\begin{minted}{swift}
+for index in 0..<array.count {
+    NSLog("%@", array[index])
+}
+\end{minted}
+\end{listing}
+
+A even better way for this case is to eliminate \texttt{index} completely. However, it requires we looking into the \texttt{for} body. This introduces a lot more complexity and we decided not to do it.
+
+%TODO: \section{Improving libclang}
+%
+%Although libclang provides a set of methods for accessing the AST, it's implementation is incomplete.
+%
+%unexposed
+%
+%information in cursor
 
 % TODO: Using PCH for better performance
 
 \section{Remaining Issues}
 
-Comments are useful in source code. It would be good to keep the comments during the conversion. Currently, they are simply dropped due to the limitation of libclang. 
+Comments are useful in source code. It would be good to keep the comments during the conversion. Currently, they are simply dropped due to the limitation of libclang. This could be implemented in the future by adding the functionality to keep the comments in libclang.
 
-Another potential improvement is to support functions and classes in addition to code snippets.
+Another potential improvement is to support larger forms of code like functions and classes in addition to code snippets. It could use the same approach to allow undefined identifiers in functions and classes.
 
-\chapter{Alternative Designs}
+\chapter{Alternative Approaches}
 
-In this chapter, we briefly discuss some alternative designs to implement the conversion tool. Instead of using libclang, we can also build the tool directly upon Clang (or with LibTooling), or write the parser from scratch.
+In this chapter, we briefly discuss some alternative approaches to implement the conversion tool. Instead of using libclang, we can also build the tool directly upon Clang (or with LibTooling), or write the parser from scratch.
 
 Babel Swift is based on libclang. As noted before, libclang offers a convinient and stable API for accessing the AST generated by Clang. It also has an official Python binding, which is very useful for fast prototyping. However, libclang doesn't provide the full access over the AST. To implement a decent conversion tool, many new featured have to be added in libclang. Moreover, as a young addition to Clang, libclang doesn't have complete documentation.
 
 Clang is the de facto standard Objective-C frontend today. Using a Clang-based approach (including libclang and LibTooling) could save a lot of effort on parsing the Objective-C code.
 
-All the designs differ from the frontend. Once the code in source language is converted to AST, the implementations of the backend are almost the same.
+All the approaches differ from the frontend. Once the code in source language is converted to AST, the implementations of the backend are almost the same.
 
 \section{Building Directly Upon Clang}
 
-Building the tool directly upon Clang gives you the full control over the AST. There are two major drawbacks: First, Clang itself was not designed as a library. Setting up Clang to use it as a library is extremely complex. Second, Clang is evolving rapidly. It doesn't promise a stable API. If the tool is building upon a certain version of Clang, there's a good chance that the code will broken with the next version. In addition, to build based on Clang, you have to write the code in C++.
+Building the tool directly upon Clang gives you the full control over the AST. There are two major drawbacks: First, Clang itself was not designed to be used as a library. Setting up Clang to use it as a library is extremely complex. Second, Clang is evolving rapidly. It doesn't promise a stable API. If the tool is building upon a certain version of Clang, there's a good chance that the code will broken with the next version. In addition, to build based on Clang, you have to write the code in C++.
 
 \subsection{LibTooling}
 
@@ -352,8 +410,8 @@ Evaluating a code conversion tool is difficult, because there are no obvious met
 
 \chapter{Conclusion}
 
-This thesis presents the design and implementation for a new Objective-C to Swift conversion tool. The key features of our tool include the ability to convert incomplete code snippets, as well as generating Swift-specific code. In the thesis, we describe the techniques we used to achieve the objectives. We also briefly discuss some alternative designs and their pros and cons. In the future, this tool could be improved to support comments. Another improvement is to support converting larger forms of code including functions and classes.
-One key contribution of this thesis is the implementation of the design. The implementation is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that this is the best tool for converting code snippets among the tools we evaluated.
+This thesis presents the design and implementation for a new Objective-C to Swift conversion tool. The key features of our tool include the ability to convert incomplete code snippets, as well as generating Swift-specific code. In the thesis, we describe the techniques we used to achieve the objectives. We also briefly discuss some alternative approaches and their pros and cons. In the future, this tool could be improved to support comments. Another improvement is to support converting larger forms of code including functions and classes.
+One key contribution of this thesis is the implementation for the design. The implementation is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that this is the best tool for converting code snippets among the tools we evaluated.
 
 
 %   BACK MATTER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

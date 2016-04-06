@@ -74,7 +74,7 @@ Attribution-NonCommercial-ShareAlike 4.0 International
 \makecommittee{}
 
 \begin{abstract}
-Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. Furthermore, Babel Swift could generate Swift-only syntax. In the thesis, we describes the design and implementation of Babel Swift. We also evaluate Babel Swift by comparing with other existing tools.
+Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. Furthermore, Babel Swift could generate Swift-only syntax. In the thesis, we describe the design and implementation of Babel Swift. We also evaluate Babel Swift by comparing with other existing tools.
 \end{abstract}
 
 
@@ -107,23 +107,23 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 
 \section{Objective-C and Swift}
 
-Objective-C is an object-oriented programming language. It's the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Because of the its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the second trending language. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, and 11,138 Swift repositories according to GitHut \cite{githut}.
+Objective-C is an object-oriented programming language. It is the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Because of the its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the second trending language. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, which is more than 3 times as many as 11,138 active Swift repositories \cite{githut}.
 
 \section{Objective-C to Swift Conversion Tools}
 
-In a Swift project, programmers may want to use existing Objective-C code. Although Objective-C and Swift files can coexist in a single project \cite{swiftandobjc}, it's not possible to use Objective-C directly in a Swift source file. To overcome this limitation, programmers usually convert Objective-C code to Swift by hand. However, this manual process is not only time consuming, but also error-prone. Objective-C to Swift conversion tools provide a safe and convenient solution to this problem. 
+In a Swift project, programmers may want to use existing Objective-C code. Although Objective-C and Swift files can coexist in a single project \cite{swiftandobjc}, it is not possible to use Objective-C directly in a Swift source file. To overcome this limitation, programmers usually convert Objective-C code to Swift manually. However, this manual process is not only time consuming, but also error-prone. Objective-C to Swift conversion tools provide a safe and convenient solution to this problem. 
 
-There are some existing conversion tools: objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
+There are serveral existing conversion tools: objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
 
-The limitation of the existing conversion tools is that they are all designed for converting complete source files or complete projects. They have very limited support for incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet on Stack Overflow, and wants to use it in a Swift project.
+The limitation of the existing conversion tools is that they are all designed for converting complete source files or complete projects. They have very limited support for incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet in a Stack Overflow answer, and wants to use it in a Swift project.
 
 \section{Introducing Babel Swift}
 
-This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift is designed for handling incomplete code snippets with undefined identifiers. It could also generate Swift-specific code, e.g., it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
+This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift is designed for handling incomplete code snippets with undefined identifiers. It could also generate Swift-specific code, e.g. it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
 
 \section{Organization of this Thesis}
 
-The rest of this thesis is organized as follows. We first describe the objectives and implementation in Chapter 2. We briefly discuss the alternative approaches in Chapter 3. In Chapter 4, we evaluate our conversion tool, and compare it with other existing tools. In Chapter 5, we conclude the thesis.
+The rest of this thesis is organized as follows. We describe the objectives and implementation in Chapter 2. We briefly discuss the alternative approaches in Chapter 3. In Chapter 4, we evaluate our conversion tool, and compare it with other existing tools. In Chapter 5, we conclude the thesis.
 
 \chapter{Objectives and Implementation}
 
@@ -131,16 +131,17 @@ Babel Swift is an Objective-C to Swift code conversion tool. It has two main obj
 
 \section{Overall Design}
 
-Babel Swift is written in Python, based on libclang \cite{libclang} and its Python binding. libclang is a C interface to Clang \cite{clang}, which is a C language family frontend for LLVM. libclang provides a small API for parsing source code and accessing the parsed abstract syntax tree (AST). By using Clang as the parser, we can focus on improving the conversion.
+Babel Swift is written in Python, based on libclang \cite{libclang} and its Python binding. libclang is a C interface to Clang \cite{clang}, a C language family frontend for LLVM. libclang provides a small API for parsing source code and accessing the parsed abstract syntax tree (AST). By using Clang as the parser, we can focus on improving the conversion.
 
 In libclang, a \emph{cursor} represent a location within the AST. Our transform function takes a cursor as input, and outputs the converted Swift code. For each cursor, the transform function traverses all the children and transform them recursively.
 
 \section{Handling Code Snippets}
 
-In this paper, we use the term \emph{code snippet} to represent a piece of code \emph{within} a function. A code snippet consists of one or more statements. An example of Objective-C \emph{code snippet} would be (\texttt{NSPopover} is a class in \emph{AppKit}, a foundational framework used in Mac development):
+In this thesis, we use the term \emph{code snippet} to represent a piece of code \emph{within} a function. A code snippet consists of one or more statements. A code snippet could not contain any function definitions. Listing \ref{lst:snippet} is an example of Objective-C \emph{code snippet} (\texttt{NSPopover} is a class in \emph{AppKit}, a foundational framework used in Mac development).
 
 \begin{listing}
 \caption{A code snippet}
+\label{lst:snippet}
 \begin{minted}{objc}
 NSInteger answer = 42;
 if (answer == 42) {
@@ -153,8 +154,8 @@ if (answer == 42) {
 Although it seems to be easy to handle code snippets, libclang refuses to parse them. For Objective-C, libclang expects the input to be a complete source file. To overcome this limitation, Babel Swift wraps the input code snippet into a complete source file. In the example above, the wrapped input for libclang is:
 
 \begin{listing}
-\caption{A complete source file containing the snippet}	
-\label{lst:snippet}
+\caption{A complete source file containing the snippet in Listing \ref{lst:snippet}}	
+\label{lst:wrappedsnippet}
 \begin{minted}{objc}
 #import <AppKit/AppKit.h>
 #import "BabelSwiftHeader.h"
@@ -194,10 +195,10 @@ if (speed == 88) {
 \end{minted}
 \end{listing}
 
-libclang cannot parse incomplete code snippets because it doesn't know whether an identifier is a variable name or a class name. For the above snippet, libclang generated the following error messages:
+libclang cannot parse incomplete code snippets because it does not know whether an identifier is a variable name or a class name. For the above snippet, libclang generated the following error messages:
 
 \begin{listing}
-\caption{Error messages generated by libclang for snippet in listing \ref{lst:incomplete}}
+\caption{Error messages generated by libclang for snippet in Listing \ref{lst:incomplete}}
 \begin{verbatim}
 input.m:7:5: error: use of undeclared identifier 'speed'
 input.m:8:5: error: use of undeclared identifier 'TimeMachine'
@@ -207,7 +208,7 @@ input.m:9:6: error: use of undeclared identifier 'timeMachine'
 \end{verbatim}
 \end{listing}
 
-As mentioned before, we included a special header file \texttt{BabelSwiftHeader.h}. We can fix the errors by adding pseudo-declarations in the header file. For undefined variable names, we declare them in the header file with type \texttt{id}. \texttt{id} in Objective-C is similar to \texttt{void *} in C, represents a pointer to any type. For undefined class names, we add interfaces in the header file. After fixing all the errors, libclang would be able to generate the AST. The header file \texttt{BabelSwiftHeader.h} for listing \ref{lst:incomplete} is like:
+As mentioned before, we included a special header file \texttt{BabelSwiftHeader.h}. We can fix the errors by adding pseudo-declarations in the header file. For undefined variable names, we declare them in the header file with type \texttt{id}. \texttt{id} in Objective-C is similar to \texttt{void *} in C, represents a pointer to any type. For undefined class names, we add interfaces in the header file. After fixing all the errors, libclang would be able to generate the AST. The header file \texttt{BabelSwiftHeader.h} for Listing \ref{lst:incomplete} is like:
 
 \begin{listing}
 \caption{The content of \texttt{BabelSwiftHeader.h} after fixing all the errors}
@@ -227,7 +228,7 @@ BABEL_SWIFT_SOME_TYPE speed;
 \end{minted}
 \end{listing}
 
-We use multiple iterations to fix all the errors. For each iteration, we only try to fix the first error reported by libclang. We use the identifier name to guess whether it's a class name or a variable name. If the identifier starts with a capital letter, we assume it's a class name, otherwise we assume it's a variable name. It is obvious to see that we may make wrong guesses, e.g. a programmer could name a variable \texttt{IPAddress}. To make sure all the identifiers are being declared correctly, if it failed to fix the error, we will make another opposite guess. We repeat this approach until there are no errors.
+We use multiple iterations to fix all the errors. For each iteration, we only try to fix the first error reported by libclang. We use the identifier name to guess whether it is a class name or a variable name. If the identifier starts with a capital letter, we assume it is a class name, otherwise we assume it is a variable name. It is obvious to see that we may make wrong guesses, e.g. a programmer could name a variable \texttt{IPAddress}. To make sure all the identifiers are being declared correctly, if it failed to fix the error, we will make another opposite guess. We repeat this approach until there are no errors.
 
 % TODO: this implementation will be changed to support property access
 
@@ -237,10 +238,10 @@ We use multiple iterations to fix all the errors. For each iteration, we only tr
 
 After wrapping the snippet into a complete file and fixing all the errors, we use libclang to parse the file and generate the AST. In libclang, each node in the AST is a \emph{cursor}. Our transform function takes a cursor as input, and outputs the converted Swift code. For each cursor, the transform function traverses all the children and transform them recursively. We use different strategies for different cursor types when concatenating the results for their children. For example, for a \texttt{COMPOUND\_STMT} cursor, we simply convert all its children and concat them together; For \texttt{IF\_STMT} cursor, we convert its conditional statement and its body, and generate the Swift \texttt{if} statement as \texttt{if \emph{converted\_condition} \{ \emph{converted\_body} \}}.
 
-The AST generated by libclang for listing \ref{lst:incomplete} would be like:
+The AST generated by libclang for Listing \ref{lst:incomplete} would be:
 
 \begin{listing}[H]
-\caption{The AST generated by libclang for listing \ref{lst:incomplete}}
+\caption{The AST generated by libclang for Listing \ref{lst:incomplete}}
 \label{lst:ast}
 \begin{verbatim}
  (CursorKind.COMPOUND_STMT)
@@ -266,7 +267,7 @@ The AST generated by libclang for listing \ref{lst:incomplete} would be like:
 Finally, we get the following Swift code from the above AST:
 
 \begin{listing}[H]
-\caption{Swift code generated from AST in listing \ref{lst:ast}}
+\caption{Swift code generated from AST in Listing \ref{lst:ast}}
 \begin{minted}{swift}
 if speed == 88 {
    let timeMachine = TimeMachine()
@@ -275,13 +276,13 @@ if speed == 88 {
 \end{minted}
 \end{listing}
 
-\section{Generating Swift-specific Code}
+\section{Generating Swift-Specific Code}
 
 The transformations for most of the cursor types are just concatenating results for children cursors in different ways. There are a few special cases need different strategies.
 
 \subsection{Data Types}
 
-Swift have a different set of data types than Objective-C. We use mappings to convert basic data types. Because it's allowed to use C types in Objective-C, we also have mappings to C types. Once we see a Objective-C or C data types in the mapping, we use the Swift counterpart in the output.
+Swift have a different set of data types than Objective-C. We use mappings to convert basic data types. Because it is allowed to use C types in Objective-C, we also have mappings for C types. Once we see an Objective-C or C data type in the mapping, we use the Swift counterpart in the output.
 
 \newcommand{\specialcell}[2][c]{%
   \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
@@ -326,16 +327,16 @@ view.insertSubview(mySubview, atIndex: 2)
 
 Babel Swift could recognize method calls in Objective-C, extract the method signatures and arguments, and convert them to Swift method calls.
 
-\subsection{Initialization}
+\subsection{Initializations}
 
-In Objective-C, class initializers begin with \texttt{init}, or \texttt{initWith:} if it takes arguments. You also need to call \texttt{alloc} explicitly when initializing an object. A complete object initialization in Objective-C is like:
+In Objective-C, class initializers begin with \texttt{init}, or \texttt{initWith:} if it takes arguments. Programmers also need to call \texttt{alloc} explicitly when initializing an object. A complete object initialization in Objective-C is like:
 
 \begin{minted}{objc}
 UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero
     style:UITableViewStyleGrouped];
 \end{minted}
 
-In Swift, the \texttt{init} or \texttt{initWith:} is removed. You also don't need to call \texttt{alloc} anymore. The object initialization becomes:
+In Swift, the \texttt{init} or \texttt{initWith:} is removed. \texttt{alloc} does not need to be called anymore. The object initialization becomes:
 
 \begin{minted}{swift}
 let tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
@@ -355,10 +356,10 @@ for (int index = 0; index < array.count; index++) {
 \end{minted}
 \end{listing}
 
-In Swift, however, C-style \texttt{for} loops are deprecated and will be removed completely in Swift 3.0 \cite{removecforloops}. To follow the best practice in Swift, Babel Swift would generate the following Swift code for the above \texttt{for} loop:
+However, C-style \texttt{for} loops are deprecated and will be removed completely in Swift 3.0 \cite{removecforloops}. To follow the best practice in Swift, Babel Swift would generate the following Swift code for the above \texttt{for} loop:
 
 \begin{listing}[H]
-\caption{Swift code converted from listing \ref{lst:forloop}}
+\caption{Swift code converted from Listing \ref{lst:forloop}}
 \begin{minted}{swift}
 for index in 0..<array.count {
     NSLog("%@", array[index])
@@ -367,6 +368,8 @@ for index in 0..<array.count {
 \end{listing}
 
 A even better way for this case is to eliminate \texttt{index} completely. However, it requires we looking into the \texttt{for} body. This introduces a lot more complexity and we decided not to do it.
+
+%TODO: type inference
 
 %TODO: \section{Improving libclang}
 %
@@ -388,7 +391,7 @@ Another potential improvement is to support larger forms of code like functions 
 
 In this chapter, we briefly discuss some alternative approaches to implement the conversion tool. Instead of using libclang, we can also build the tool directly upon Clang (or with LibTooling), or write the parser from scratch.
 
-Babel Swift is based on libclang. As noted before, libclang offers a convinient and stable API for accessing the AST generated by Clang. It also has an official Python binding, which is very useful for fast prototyping. However, libclang doesn't provide the full access over the AST. To implement a decent conversion tool, many new featured have to be added in libclang. Moreover, as a young addition to Clang, libclang doesn't have complete documentation.
+Babel Swift is based on libclang. As noted before, libclang offers a convinient and stable API for accessing the AST generated by Clang. It also has an official Python binding, which is very helpful for fast prototyping. However, libclang does not provide the full access over the AST. To implement a decent conversion tool, many new featured have to be added in libclang. Moreover, as a young addition to Clang, libclang does not have complete documentation.
 
 Clang is the de facto standard Objective-C frontend today. Using a Clang-based approach (including libclang and LibTooling) could save a lot of effort on parsing the Objective-C code.
 
@@ -396,7 +399,7 @@ All the approaches differ from the frontend. Once the code in source language is
 
 \section{Building Directly Upon Clang}
 
-Building the tool directly upon Clang gives you the full control over the AST. There are two major drawbacks: First, Clang itself was not designed to be used as a library. Setting up Clang to use it as a library is extremely complex. Second, Clang is evolving rapidly. It doesn't promise a stable API. If the tool is building upon a certain version of Clang, there's a good chance that the code will broken with the next version. In addition, to build based on Clang, you have to write the code in C++.
+Building the tool directly upon Clang provides the full control over the AST. There are two major drawbacks: First, Clang itself is not designed to be used as a library. Setting up Clang to use it as a library is extremely complex. Second, Clang is evolving rapidly. It does not promise a stable API. If the tool is building upon a certain version of Clang, there is a good chance that the code will broken with the next version. In addition, the only possible language to implement based on Clang is C++.
 
 \subsection{LibTooling}
 
@@ -410,24 +413,24 @@ Using a custom parser provides the best flexibility over the implementation. The
 
 \chapter{Evaluation}
 
-Evaluating a code conversion tool is difficult, because there are no obvious metrics for them. Typical metrics like performance are not important for code conversion tools. Instead, the most important qualities for code conversion tools are \emph{the support for input source code}, \emph{the correctness of conversion}, and \emph{the quality of converted code}. This chapter defines these terms attempts to evaluate these qualities in the following sections.
+Evaluating a code conversion tool is difficult, because there are no obvious metrics for them. Typical metrics like performance are not important for code conversion tools. Instead, the most important qualities for code conversion tools are \emph{the support for input source code}, \emph{the correctness of conversion}, and \emph{the quality of converted code}. This chapter defines these terms and attempts to evaluate these qualities in the following sections.
 
 \section{Methodology}
 
-To collect real world Objective-C code for evaluation, we chose most voted questions under \emph{objective-c} tag on Stack Overflow. If the question or answer contains code, we can use that for our evaluation. We've collected X pieces of code in total.
+To collect real world Objective-C code for evaluation, we chose most voted questions under \textbf{objective-c} tag on Stack Overflow. If the question and its answers contain code, we can use them for our evaluation. We have collected X pieces of code in total.
 
-Because Babel Swift only supports converting code snippets, we did the two steps to process the code:
+Because Babel Swift only supports converting code snippets, we did the two steps to preprocess the code:
 
 \begin{enumerate}
   \item If the code contains more than one functions, we only keep the first function. We also remove dangling code other than that function.
-  \item If the code contains a function, we use the function body as the input for Babel Swift; we use the whole function for other conversion tools.
+  \item If the code contains a function, we use the function body as the input for Babel Swift; we use the whole function as the input for other conversion tools.
 \end{enumerate}
 
-We then run Babel Swift, objc2swift, Swiftify, and iSwift on the X inputs.
+After preprocessing, we run Babel Swift, objc2swift, Swiftify, and iSwift on all the X inputs.
 
 \section{The Support of Input Source Code}
 
-If a conversion tool succeeded in converting a piece of source code, we say that it \emph{support} that piece of code. Table \ref{table:numcodesupported} shows number of code pieces each conversion tool supported.
+If a conversion tool succeeded in converting a piece of source code, we say that it \emph{supports} that piece of code. Table \ref{table:numcodesupported} shows number of code pieces each conversion tool supported.
 
 \begin{table}[H]
 \begin{center}
@@ -443,9 +446,9 @@ X & a & b & c & d \\
 \label{table:numcodesupported}
 \end{table}
 
-\section{The Correctness of Conversion}
+\section{The Correctness of Conversions}
 
-If the converted code and the original code have the same functionality, we say that the conversion is \emph{correct}. It is hard to write a general purpose tool to test the code automatically. So we evaluated the correctness of conversion by hand. Table \ref{table:correctness} shows the correctness of conversions for each code piece.
+If the converted code and the original code have the same functionality, we say that the conversion is \emph{correct}. It is hard to write a general purpose tool to test the code automatically. So we evaluated the correctness of conversions by hand. Table \ref{table:correctness} shows the correctness of conversions for each code piece.
 
 \begin{table}[H]
 \begin{center}
@@ -467,7 +470,7 @@ If the converted code and the original code have the same functionality, we say 
 
 \section{The Quality of Converted Code}
 
-Finally, we convert all the test cases by hand. If the machine-converted code is \emph{identical} to the hand-converted, we say that the conversion is \emph{optimal}. By \emph{identical}, we do tolerate extra or lack of spaces. Table \ref{table:quality} shows the quality of converted code for each conversion tool.
+Finally, we convert all the test cases by hand. If the machine-converted code is \emph{identical} to the hand-converted one, we say that the conversion is \emph{optimal}. By \emph{identical}, we do tolerate extra or lacking of spaces. Table \ref{table:quality} shows the quality of converted code for each conversion tool.
 
 \begin{table}[H]
 \begin{center}
@@ -493,8 +496,8 @@ Waiting for implementation to be finalized.
 
 \chapter{Conclusion}
 
-This thesis presents the design and implementation for a new Objective-C to Swift conversion tool. The key features of our tool include the ability to convert incomplete code snippets, as well as generating Swift-specific code. In the thesis, we describe the techniques we used to achieve the objectives. We also briefly discuss some alternative approaches and their pros and cons. In the future, this tool could be improved to support comments. Another improvement is to support converting larger forms of code including functions and classes.
-One key contribution of this thesis is the implementation for the design. The implementation is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that this is the best tool for converting code snippets among the tools we evaluated.
+This thesis presents the design and implementation of a new Objective-C to Swift conversion tool. The key features of our tool include the ability to convert incomplete code snippets, as well as generating Swift-specific code. In the thesis, we describe the techniques we used to achieve the objectives. We also briefly discuss the alternative approaches. In the future, this tool could be improved to support comments. Another improvement is to support converting larger forms of code including functions and classes.
+One key contribution of this thesis is the implementation for the design. The implementation of Babel Fish is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that this is the best tool for converting code snippets among the tools we evaluated.
 
 
 %   BACK MATTER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

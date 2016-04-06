@@ -410,13 +410,86 @@ Using a custom parser provides the best flexibility over the implementation. The
 
 \chapter{Evaluation}
 
-Evaluating a code conversion tool is difficult, because there are no obvious metrics for them. Typical metrics like performance are not important for code conversion tools. Instead, the most important qualities for code conversion tools are \emph{the variety of input source code it can handle}, \emph{the correctness of converted code}, and \emph{the quality of converted code}. This chapter attempts to evaluate these qualities in the following sections.
+Evaluating a code conversion tool is difficult, because there are no obvious metrics for them. Typical metrics like performance are not important for code conversion tools. Instead, the most important qualities for code conversion tools are \emph{the support for input source code}, \emph{the correctness of conversion}, and \emph{the quality of converted code}. This chapter defines these terms attempts to evaluate these qualities in the following sections.
 
-\section{The Variety of Input Source Code}
+\section{Methodology}
 
-\section{The Correctness of Converted Code}
+To collect real world Objective-C code for evaluation, we chose most voted questions under \emph{objective-c} tag on Stack Overflow. If the question or answer contains code, we can use that for our evaluation. We've collected X pieces of code in total.
+
+Because Babel Swift only supports converting code snippets, we did the two steps to process the code:
+
+\begin{enumerate}
+  \item If the code contains more than one functions, we only keep the first function. We also remove dangling code other than that function.
+  \item If the code contains a function, we use the function body as the input for Babel Swift; we use the whole function for other conversion tools.
+\end{enumerate}
+
+We then run Babel Swift, objc2swift, Swiftify, and iSwift on the X inputs.
+
+\section{The Support of Input Source Code}
+
+If a conversion tool succeeded in converting a piece of source code, we say that it \emph{support} that piece of code. Table \ref{table:numcodesupported} shows number of code pieces each conversion tool supported.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Total} & Babel Swift & objc2swift & Swiftify & iSwift \\
+\hline
+X & a & b & c & d \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Number of code pieces each conversion tool supported}
+\label{table:numcodesupported}
+\end{table}
+
+\section{The Correctness of Conversion}
+
+If the converted code and the original code have the same functionality, we say that the conversion is \emph{correct}. It is hard to write a general purpose tool to test the code automatically. So we evaluated the correctness of conversion by hand. Table \ref{table:correctness} shows the correctness of conversions for each code piece.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Code Piece \#} & Babel Swift & objc2swift & Swiftify & iSwift \\
+\hline
+1 & a & b & c & d \\
+2 & a & b & c & d \\
+3 & a & b & c & d \\
+4 & a & b & c & d \\
+5 & a & b & c & d \\
+\hline
+\end{tabular}
+\end{center}
+\caption{The correctness of conversions}
+\label{table:correctness}
+\end{table}
 
 \section{The Quality of Converted Code}
+
+Finally, we convert all the test cases by hand. If the machine-converted code is \emph{identical} to the hand-converted, we say that the conversion is \emph{optimal}. By \emph{identical}, we do tolerate extra or lack of spaces. Table \ref{table:quality} shows the quality of converted code for each conversion tool.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Code Piece \#} & Babel Swift & objc2swift & Swiftify & iSwift \\
+\hline
+1 & a & b & c & d \\
+2 & a & b & c & d \\
+3 & a & b & c & d \\
+4 & a & b & c & d \\
+5 & a & b & c & d \\
+\hline
+\end{tabular}
+\end{center}
+\caption{The quality of converted code}
+\label{table:quality}
+\end{table}
+
+\section{Evaluation Summary}
+
+Waiting for implementation to be finalized.
 
 \chapter{Conclusion}
 

@@ -73,7 +73,7 @@ Attribution-NonCommercial-ShareAlike 4.0 International
 \makecommittee{}
 
 \begin{abstract}
-Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This report introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. Furthermore, Babel Swift could generate Swift-only syntax. In the report, we describe the design and implementation of Babel Swift. We also evaluate Babel Swift by comparing with other existing tools.
+Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This report introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. In the report, we describe the design and implementation of Babel Swift. We also evaluate Babel Swift by comparing with other existing tools.
 \end{abstract}
 
 
@@ -107,7 +107,7 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 
 Objective-C is a programming language which adds Smalltalk's object-oriented features to the C programming language, designed by Brad Cox and Tom Love in 1983 \cite{cox1983object}. Objective-C allows programmers to use all the features in the C programming language, together with features of object-oriented paradigm (classes, objects, instance and class methods, etc.). It is the primary programming language for writing software on Apple's OS X and iOS platforms \cite{aboutobjc}.
 
-In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Some additional features of Swift include tuples, generics, functional programming features, built-in error handling, and advanced control flow (\texttt{do}, \texttt{guard}, \texttt{defer}, and \texttt{repeat} keywords). It also has a new keyword \texttt{let} to define constants, and a new feature known as \emph{optionals} to ensure safety. Because of the its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the third trending technology \cite{stackoverflow2016survey}. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, which is more than 3 times as many as 11,138 active Swift repositories \cite{githut}.
+In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Some additional features of Swift include tuples, generics, functional programming features, built-in error handling, and advanced control flow (\texttt{do}, \texttt{guard}, \texttt{defer}, and \texttt{repeat} keywords). It also has a new keyword \texttt{let} to define constants, and a new feature known as \emph{optionals} to ensure safety. Because of its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the third trending technology \cite{stackoverflow2016survey}. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, which is more than 3 times as many as 11,138 active Swift repositories \cite{githut}.
 
 \section{Objective-C to Swift Conversion Tools}
 
@@ -119,7 +119,7 @@ The limitation of the existing conversion tools is that they are all designed fo
 
 \section{Introducing Babel Swift}
 
-This report introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift is designed for handling incomplete code snippets with undefined identifiers. It could also generate Swift-specific code, e.g. it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
+This report introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift is designed for handling incomplete code snippets with undefined identifiers. It could also generate code using Swift's new features, e.g. it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
 
 \section{Organization of this Report}
 
@@ -184,7 +184,7 @@ We use two special names \texttt{\_\_BABEL\_SWIFT\_WRAPPER\_CLASS\_\_} and \text
 
 We define an \emph{incomplete code snippet} as a code snippet which contains undefined identifiers. For example, the following Objective-C code snippet is an \emph{incomplete code snippet}, because both \texttt{speed} and \texttt{TimeMachine} are undefined identifiers.
 
-\begin{listing}
+\begin{listing}[H]
 \caption{An incomplete code snippet}
 \label{lst:incomplete}
 \begin{minted}{objc}
@@ -210,7 +210,7 @@ input.m:9:6: error: use of undeclared identifier 'timeMachine'
 
 As mentioned before, we included a special header file \texttt{BabelSwiftHeader.h}. We can fix the errors by adding pseudo-declarations in this header file. For each undefined variable name, we declare an empty class interface, and declare the variable using that new class. For each undefined class name, we add an empty class interface in the header file. After fixing all the errors, libclang would be able to generate the AST. The header file \texttt{BabelSwiftHeader.h} for Listing \ref{lst:incomplete} is like:
 
-\begin{listing}
+\begin{listing}[H]
 \caption{The content of \texttt{BabelSwiftHeader.h} after fixing all the errors}
 \begin{minted}{objc}
 @class __BABEL_SWIFT_WRAPPER_CLASS__;
@@ -366,9 +366,11 @@ Swift has a different set of data types than Objective-C. We use mappings to con
 \caption{Mappings for primitive data types}
 \end{table}
 
+Enumeration types also need special conversion. Due to its complexity, we do not support enumerations yet.
+
 \subsection{Method Calls}
 
-In Objective-C, the syntax for method calls is a little special compared to other C-like languages. For example, the following code would call \texttt{- insertSubview:atIndex:} with parameters \texttt{mySubview} and \texttt{2}.
+In Objective-C, the syntax for method calls is special compared to other C-like languages. For example, the following code would call \texttt{- insertSubview:atIndex:} with parameters \texttt{mySubview} and \texttt{2}. The syntax is similar to \emph{named arguments} in other languages, the order of the arguments cannot be changed.
 
 \begin{minted}{objc}
 [view insertSubview:mySubview atIndex:2];
@@ -384,14 +386,14 @@ Babel Swift could recognize method calls in Objective-C, extract the method sign
 
 \subsection{Initializations}
 
-In Objective-C, class initializers begin with \texttt{init}, or \texttt{initWith:} if it takes arguments. Programmers also need to call \texttt{alloc} explicitly when initializing an object. A complete object initialization in Objective-C is like:
+In Objective-C, class initializers must begin with \texttt{init}, or \texttt{initWith} if it takes arguments \cite{objcinit}. Programmers also need to call \texttt{alloc} to allocate memory explicitly when initializing an object. A complete object initialization in Objective-C is like:
 
 \begin{minted}{objc}
 UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero
     style:UITableViewStyleGrouped];
 \end{minted}
 
-In Swift, the \texttt{init} or \texttt{initWith:} is removed. \texttt{alloc} does not need to be called anymore. The object initialization becomes:
+In Swift, the \texttt{init} or \texttt{initWith:} is omitted. \texttt{alloc} does not need to be called explicitly. The object initialization becomes:
 
 \begin{minted}{swift}
 let tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
@@ -422,7 +424,18 @@ for index in 0..<array.count {
 \end{minted}
 \end{listing}
 
-A even better way for this case is to eliminate \texttt{index} completely. However, it requires we looking into the \texttt{for} body. This introduces a lot more complexity and we decided not to do it.
+A even better way in terms of coding style for this case is to eliminate \texttt{index} completely. However, it requires we looking into the \texttt{for} body. This introduces a lot more complexity and we decided not to do it.
+
+\begin{listing}[H]
+\caption{An optimal Swift \texttt{for} loop for Listing \ref{lst:forloop}}
+\begin{minted}{swift}
+for elem in array {
+    NSLog("%@", elem)
+}
+\end{minted}
+\end{listing}
+
+The C-style \texttt{for} loop requires three parts: Initialization, condition, and afterthought. Currently we only support converting \texttt{for} loops with the following constraints: the initialization part must be a single variable definition; the condition part must be a boolean operation between the variable defined in the initialization part and an expression, the operator must be \texttt{<}, \texttt{<=}, \texttt{>}, or \texttt{>=}; the afterthought part must be an increment or decrement of the variable defined in the initialization part.
 
 %TODO: type inference
 

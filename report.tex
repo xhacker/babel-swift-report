@@ -105,13 +105,15 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 
 \section{Objective-C and Swift}
 
-Objective-C is an object-oriented programming language. It is the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Because of the its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the third trending technology \cite{stackoverflow2016survey}. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, which is more than 3 times as many as 11,138 active Swift repositories \cite{githut}.
+Objective-C is a programming language which adds Smalltalk's object-oriented features to the C programming language, designed by Brad Cox and Tom Love in 1983 \cite{cox1983object}. Objective-C allows programmers to use all the features in the C programming language, together with features of object-oriented paradigm (classes, objects, instance and class methods, etc.). It is the primary programming language for writing software on Apple's OS X and iOS platforms \cite{aboutobjc}.
+
+In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Some additional features of Swift include tuples, generics, functional programming features, built-in error handling, and advanced control flow (\texttt{do}, \texttt{guard}, \texttt{defer}, and \texttt{repeat} keywords). It also has a new keyword \texttt{let} to define constants, and a new feature known as \emph{optionals} to ensure safety. Because of the its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the third trending technology \cite{stackoverflow2016survey}. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, which is more than 3 times as many as 11,138 active Swift repositories \cite{githut}.
 
 \section{Objective-C to Swift Conversion Tools}
 
 In a Swift project, programmers may want to use existing Objective-C code. Although Objective-C and Swift files can coexist in a single project \cite{swiftandobjc}, it is not possible to use Objective-C directly in a Swift source file. To overcome this limitation, programmers usually convert Objective-C code to Swift manually. However, this manual process is not only time consuming, but also error-prone. Objective-C to Swift conversion tools provide a safe and convenient solution to this problem. 
 
-There are serveral existing conversion tools: objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
+There are several existing conversion tools: objc2swift \cite{objc2swift} is an open-source conversion tool. Swiftify \cite{swiftify} and iSwift \cite{iswift} are two commercial conversion tools.
 
 The limitation of the existing conversion tools is that they are all designed for converting complete source files or complete projects. They have very limited support for incomplete code snippets with undefined identifiers. However, converting incomplete code snippets is a typical use case of conversion tools. For example, a programmer may find an Objective-C code snippet in a Stack Overflow answer, and wants to use it in a Swift project.
 
@@ -442,6 +444,8 @@ prepareforsegue & Yes & No  & Yes & No  \\
 sortusingblock  & Yes & No  & Yes & No  \\
 textfield       & No  & No  & Yes & No  \\
 viewwillappear  & Yes & No  & Yes & No  \\
+\hline
+\textbf{Total}  & 5 (83.3\%) & 0 (0\%) & 6 (100\%) & 1 (16.7\%) \\
 \hline
 \end{tabular}
 \end{center}

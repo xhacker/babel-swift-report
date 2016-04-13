@@ -483,7 +483,7 @@ Evaluating a code conversion tool is difficult, because there are no obvious met
 
 \section{Methodology}
 
-To collect real world Objective-C code for evaluation, we chose most voted questions under \textbf{objective-c} tag on Stack Overflow. If the question and its answers contain code, we can use them for our evaluation. We have collected 6 pieces of code in total: \emph{dispatch.m}, \emph{location.m}, \emph{prepareforsegue.m}, \emph{sortusingblock.m}, \emph{textfield.m}, and \emph{viewwillappear.m}.
+To collect real world Objective-C code for evaluation, we chose most voted questions under \textbf{objective-c} tag on Stack Overflow. If the question and its answers contain code, we can use them for our evaluation. We have collected 6 pieces of code in total: \emph{dispatch.m}, \emph{location.m}, \emph{prepareforsegue.m}, \emph{sortusingblock.m}, \emph{textfield.m}, and \emph{viewwillappear.m}. See Appendix \ref{chap:evaluationcode} for all the code we have collected.
 
 Because Babel Swift only supports converting code snippets, we did the two steps to preprocess the code:
 
@@ -507,11 +507,11 @@ If a conversion tool succeeded in converting a piece of source code, we say that
 dispatch        & Yes & No  & Yes & Yes \\
 location        & Yes & No  & Yes & No  \\
 prepareforsegue & Yes & No  & Yes & No  \\
-sortusingblock  & Yes & No  & Yes & No  \\
+sortusingblock  & No  & No  & Yes & No  \\
 textfield       & No  & No  & Yes & No  \\
 viewwillappear  & Yes & No  & Yes & No  \\
 \hline
-\textbf{Total}  & 5 (83.3\%) & 0 (0\%) & 6 (100\%) & 1 (16.7\%) \\
+\textbf{Total}  & 4 (66.7\%) & 0 (0\%) & 6 (100\%) & 1 (16.7\%) \\
 \hline
 \end{tabular}
 \end{center}
@@ -521,7 +521,7 @@ viewwillappear  & Yes & No  & Yes & No  \\
 
 \section{The Correctness of Conversions}
 
-If the converted code and the original code have the same functionality, we say that the conversion is \emph{correct}. It is hard to write a general purpose tool to test the code automatically. So we evaluated the correctness of conversions by hand. Table \ref{table:correctness} shows the correctness of conversions for each code piece.
+If the converted code is valid Swift code, and it has the same functionality as the original code, we say that the conversion is \emph{correct}. It is hard to write a general purpose tool to test the code automatically. So we evaluated the correctness of conversions by hand. Table \ref{table:correctness} shows the correctness of conversions for each code piece.
 
 \begin{table}[H]
 \begin{center}
@@ -529,12 +529,12 @@ If the converted code and the original code have the same functionality, we say 
 \hline
 \textbf{Code Piece} & Babel Swift & objc2swift & Swiftify & iSwift \\
 \hline
-dispatch        & a & n/a & c & d \\
-location        & a & n/a & c & n/a \\
-prepareforsegue & a & n/a & c & n/a \\
-sortusingblock  & a & n/a & c & n/a \\
-textfield       & a & n/a & c & n/a \\
-viewwillappear  & a & n/a & c & n/a \\
+dispatch        & Yes & n/a & No  & Yes \\
+location        & Yes & n/a & Yes & n/a \\
+prepareforsegue & Yes & n/a & Yes & n/a \\
+sortusingblock  & n/a & n/a & Yes & n/a \\
+textfield       & n/a & n/a & Yes & n/a \\
+viewwillappear  & Yes & n/a & Yes & n/a \\
 \hline
 \end{tabular}
 \end{center}
@@ -544,7 +544,7 @@ viewwillappear  & a & n/a & c & n/a \\
 
 \section{The Quality of Converted Code}
 
-Finally, we convert all the test cases by hand. If the machine-converted code is \emph{identical} to the hand-converted one, we say that the conversion is \emph{optimal}. By \emph{identical}, we do tolerate extra or lacking of spaces. Table \ref{table:quality} shows the quality of converted code for each conversion tool.
+Finally, we convert all the test cases by hand. If the machine-converted code is \emph{identical} to the hand-converted one, we say that the conversion is \emph{optimal}. We define two pieces of code are \emph{identical} if they have the same parse tree. Table \ref{table:quality} shows the quality of converted code for each conversion tool.
 
 \begin{table}[H]
 \begin{center}
@@ -552,12 +552,12 @@ Finally, we convert all the test cases by hand. If the machine-converted code is
 \hline
 \textbf{Code Piece} & Babel Swift & objc2swift & Swiftify & iSwift \\
 \hline
-dispatch        & a & n/a & c & d \\
-location        & a & n/a & c & n/a \\
-prepareforsegue & a & n/a & c & n/a \\
-sortusingblock  & a & n/a & c & n/a \\
-textfield       & a & n/a & c & n/a \\
-viewwillappear  & a & n/a & c & n/a \\
+dispatch        & Not Optimal & n/a & Not Optimal & No  \\
+location        & Optimal & n/a & Not Optimal & n/a \\
+prepareforsegue & Optimal & n/a & Not Optimal & n/a \\
+sortusingblock  & n/a & n/a & Optimal & n/a \\
+textfield       & n/a & n/a & Optimal & n/a \\
+viewwillappear  & Optimal & n/a & Not Optimal & n/a \\
 \hline
 \end{tabular}
 \end{center}
@@ -567,12 +567,12 @@ viewwillappear  & a & n/a & c & n/a \\
 
 \section{Evaluation Summary}
 
-Waiting for implementation to be finalized.
+Because the evaluation was not automated, we could not use a big amount of test data. Based on the 6 inputs, we cannot get any statistically significant results. Despite that, Babel Swift's ability is promising. Babel Swift was able to convert 4 code snippets out of 6. In the Swift code generated by Babel Swift, 3/4 are considered identical to hand-converted. Although there are plenty of room for improvements, it does show its utility in converting real world snippets.
 
 \chapter{Conclusion}
 
 This report presents the design and implementation of a new Objective-C to Swift conversion tool. The key features of our tool include the ability to convert incomplete code snippets, as well as generating Swift-specific code. In the report, we describe the techniques we used to achieve the objectives. We also briefly discuss the alternative approaches. In the future, this tool could be improved to support comments. Another improvement is to support converting larger forms of code including functions and classes.
-One key contribution of our work is the implementation for the design. The implementation of Babel Swift is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that this is the best tool for converting code snippets among the tools we evaluated.
+One key contribution of our work is the implementation for the design. The implementation of Babel Swift is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that it could convert 4/6 of the code snippets we have tested, and 3 of them were considered optimal.
 
 
 %   BACK MATTER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -592,7 +592,100 @@ One key contribution of our work is the implementation for the design. The imple
 	\bibliographystyle{plain}
 	\bibliography{references}
 
-\begin{appendices} % optional
-	\chapter{Code}
+\begin{appendices}
+
+\chapter{Code Used in Evaluation}\label{chap:evaluationcode}
+
+\begin{listing}
+\caption{dispatch.m, from \cite{so4139219}}
+\begin{minted}{objc}
+CGFloat time1 = 3.49;
+CGFloat time2 = 8.13;
+
+// Delay 2 seconds
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)),
+               dispatch_get_main_queue(), ^{
+    CGFloat newTime = time1 + time2;
+    NSLog(@"New time: %f", newTime);
+});
+\end{minted}
+\end{listing}
+
+\begin{listing}
+\caption{location.m, from \cite{so24062509}}
+\begin{minted}{objc}
+- (void)startLocationManager
+{
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.distanceFilter = kCLDistanceFilterNone; //whenever we move
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+
+    [locationManager startUpdatingLocation];
+    [locationManager requestWhenInUseAuthorization]; // Add This Line
+}
+\end{minted}
+\end{listing}
+
+\begin{listing}
+\caption{prepareforsegue.m, from \cite{so5210535}}
+\begin{minted}{objc}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"showDetailSegue"]) {
+        UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
+        ViewControllerB *controller = (ViewControllerB *)navController.topViewController;
+        controller.isSomethingEnabled = YES;
+    }
+}
+\end{minted}
+\end{listing}
+
+\begin{listing}
+\caption{sortusingblock.m, from \cite{so805547}}
+\begin{minted}{objc}
+NSArray *sortedArray;
+sortedArray = [drinkDetails sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+    NSDate *first = [(Person *)a birthDate];
+    NSDate *second = [(Person *)b birthDate];
+    return [first compare:second];
+}];
+\end{minted}
+\end{listing}
+
+\begin{listing}
+\caption{textfield.m, from \cite{so1126726}}
+\begin{minted}{objc}
+- (void)textFieldDidBeginEditing:(UITextField *)textField { 
+    // Keyboard becomes visible
+    scrollView.frame = CGRectMake(
+        scrollView.frame.origin.x, 
+        scrollView.frame.origin.y, 
+        scrollView.frame.size.width,
+        scrollView.frame.size.height - 215 + 50); // Resize
+}
+\end{minted}
+\end{listing}
+
+\begin{listing}
+\caption{viewwillappear.m, from \cite{so1126726}}
+\begin{minted}{objc}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    // register for keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+\end{minted}
+\end{listing}
+	
 \end{appendices}
+
 \end{document}

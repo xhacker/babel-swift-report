@@ -229,20 +229,21 @@
     \thispagestyle{empty}
                                                             \null\vfill
                     \begin{center}
+               {\bfseries CMPT 497 Capstone Project Report \\}
                {\huge\bfseries\@title\par}                  \vspace{1em}
 
                           by                                \vspace{1em}
 
               {\Large\bfseries\@author}                     \vspace{1em}
 
-                  \@previousdegrees
+%                  \@previousdegrees
                                                             \vfill
 
-    {\@thesistype} Submitted in Partial Fulfillment of the  \\
-              Requirements for the Degree of                \\
-                      \@degree                              \vspace{1em}
-
-                       in the                               \\
+%    {\@thesistype} Submitted in Partial Fulfillment of the  \\
+%              Requirements for the Degree of                \\
+%                      \@degree                              \vspace{1em}
+%
+%                       in the                               \\
                     \@department                            \\
                      \@faculty
                                                             \vfill

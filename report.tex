@@ -1,7 +1,6 @@
 \documentclass{sfuthesis}
 
 \title{Babel Swift: An Objective-C to Swift Conversion Tool}
-\thesistype{Dissertation}
 \author{Dongyuan Liu}
 \degree{Bachelor of Science}
 \discipline{Computing Science}
@@ -74,7 +73,7 @@ Attribution-NonCommercial-ShareAlike 4.0 International
 \makecommittee{}
 
 \begin{abstract}
-Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. Furthermore, Babel Swift could generate Swift-only syntax. In the thesis, we describe the design and implementation of Babel Swift. We also evaluate Babel Swift by comparing with other existing tools.
+Swift is a new programming language developed by Apple, designed to replace Objective-C as the main programming language on Apple platforms. This report introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Our tool focuses on converting code snippets. The most important feature of Babel Swift is the ability to convert incomplete code snippets with undefined identifiers. Furthermore, Babel Swift could generate Swift-only syntax. In the report, we describe the design and implementation of Babel Swift. We also evaluate Babel Swift by comparing with other existing tools.
 \end{abstract}
 
 
@@ -82,10 +81,9 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 %\end{dedication}
 
 
-\begin{acknowledgements} % optional
+%\begin{acknowledgements} % optional
 %Foremost, I would like thank my supervisor Dr. Thomas Shermer for his  earnest support.
-
-\end{acknowledgements}
+%\end{acknowledgements}
 
 \addtoToC{Table of Contents}\tableofcontents\clearpage
 \addtoToC{List of Tables}\listoftables\clearpage
@@ -119,11 +117,11 @@ The limitation of the existing conversion tools is that they are all designed fo
 
 \section{Introducing Babel Swift}
 
-This thesis introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift is designed for handling incomplete code snippets with undefined identifiers. It could also generate Swift-specific code, e.g. it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
+This report introduces Babel Swift, a new conversion tool for converting Objective-C code to Swift. Babel Swift is designed for handling incomplete code snippets with undefined identifiers. It could also generate Swift-specific code, e.g. it has the ability to convert C-style \texttt{for} loops to \texttt{for-in} statements and \texttt{stride} in Swift. Babel Swift is written in Python, based on libclang \cite{libclang}. The full source code could be found on GitHub \cite{babelswift}.
 
-\section{Organization of this Thesis}
+\section{Organization of this Report}
 
-The rest of this thesis is organized as follows. We describe the objectives and implementation in Chapter 2. We briefly discuss the alternative approaches in Chapter 3. In Chapter 4, we evaluate our conversion tool, and compare it with other existing tools. In Chapter 5, we conclude the thesis.
+The rest of this report is organized as follows. We describe the objectives and implementation in Chapter 2. We briefly discuss the alternative approaches in Chapter 3. In Chapter 4, we evaluate our conversion tool, and compare it with other existing tools. In Chapter 5, we conclude the report.
 
 \chapter{Objectives and Implementation}
 
@@ -137,7 +135,7 @@ In libclang, a \emph{cursor} represent a location within the AST. Our transform 
 
 \section{Handling Code Snippets}
 
-In this thesis, we use the term \emph{code snippet} to represent a piece of code \emph{within} a function. A code snippet consists of one or more statements. A code snippet could not contain any function definitions. Listing \ref{lst:snippet} is an example of Objective-C \emph{code snippet} (\texttt{NSPopover} is a class in \emph{AppKit}, a foundational framework used in Mac development).
+In this report, we use the term \emph{code snippet} to represent a piece of code \emph{within} a function. A code snippet consists of one or more statements. A code snippet could not contain any function definitions. Listing \ref{lst:snippet} is an example of Objective-C \emph{code snippet} (\texttt{NSPopover} is a class in \emph{AppKit}, a foundational framework used in Mac development).
 
 \begin{listing}
 \caption{A code snippet}
@@ -496,8 +494,8 @@ Waiting for implementation to be finalized.
 
 \chapter{Conclusion}
 
-This thesis presents the design and implementation of a new Objective-C to Swift conversion tool. The key features of our tool include the ability to convert incomplete code snippets, as well as generating Swift-specific code. In the thesis, we describe the techniques we used to achieve the objectives. We also briefly discuss the alternative approaches. In the future, this tool could be improved to support comments. Another improvement is to support converting larger forms of code including functions and classes.
-One key contribution of this thesis is the implementation for the design. The implementation of Babel Fish is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that this is the best tool for converting code snippets among the tools we evaluated.
+This report presents the design and implementation of a new Objective-C to Swift conversion tool. The key features of our tool include the ability to convert incomplete code snippets, as well as generating Swift-specific code. In the report, we describe the techniques we used to achieve the objectives. We also briefly discuss the alternative approaches. In the future, this tool could be improved to support comments. Another improvement is to support converting larger forms of code including functions and classes.
+One key contribution of our work is the implementation for the design. The implementation of Babel Fish is complete and useable. The source code is fully accessible on GitHub \cite{babelswift}. At last, we evaluate the conversion tool. Results show that this is the best tool for converting code snippets among the tools we evaluated.
 
 
 %   BACK MATTER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

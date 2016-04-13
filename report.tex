@@ -105,7 +105,7 @@ Swift is a new programming language developed by Apple, designed to replace Obje
 
 \section{Objective-C and Swift}
 
-Objective-C is an object-oriented programming language. It is the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Because of the its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the second trending language. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, which is more than 3 times as many as 11,138 active Swift repositories \cite{githut}.
+Objective-C is an object-oriented programming language. It is the main programming language used by Apple on its OS X and iOS platforms. In 2014, Apple introduced Swift, a new programming language for building iOS, OS X, watchOS, and tvOS apps. Swift adopts safe programming patterns and modern features, makes writing programs easier and more flexible \cite{aboutswift}. Because of the its advanced design, Swift is becoming more and more popular. According to a developer survey by Stack Overflow, a popular question-and-answer website for developers, in 2016, Swift is the third trending technology \cite{stackoverflow2016survey}. However, there are a lot of existing source code and resources in Objective-C. On GitHub, a popular website for hosting source code, by April 2016, there are 36,568 active Objective-C repositories, which is more than 3 times as many as 11,138 active Swift repositories \cite{githut}.
 
 \section{Objective-C to Swift Conversion Tools}
 
@@ -415,7 +415,7 @@ Evaluating a code conversion tool is difficult, because there are no obvious met
 
 \section{Methodology}
 
-To collect real world Objective-C code for evaluation, we chose most voted questions under \textbf{objective-c} tag on Stack Overflow. If the question and its answers contain code, we can use them for our evaluation. We have collected X pieces of code in total.
+To collect real world Objective-C code for evaluation, we chose most voted questions under \textbf{objective-c} tag on Stack Overflow. If the question and its answers contain code, we can use them for our evaluation. We have collected 6 pieces of code in total: \emph{dispatch.m}, \emph{location.m}, \emph{prepareforsegue.m}, \emph{sortusingblock.m}, \emph{textfield.m}, and \emph{viewwillappear.m}.
 
 Because Babel Swift only supports converting code snippets, we did the two steps to preprocess the code:
 
@@ -424,23 +424,28 @@ Because Babel Swift only supports converting code snippets, we did the two steps
   \item If the code contains a function, we use the function body as the input for Babel Swift; we use the whole function as the input for other conversion tools.
 \end{enumerate}
 
-After preprocessing, we run Babel Swift, objc2swift, Swiftify, and iSwift on all the X inputs.
+After preprocessing, we run Babel Swift, objc2swift, Swiftify, and iSwift on all the 6 inputs.
 
 \section{The Support of Input Source Code}
 
-If a conversion tool succeeded in converting a piece of source code, we say that it \emph{supports} that piece of code. Table \ref{table:numcodesupported} shows number of code pieces each conversion tool supported.
+If a conversion tool succeeded in converting a piece of source code, we say that it \emph{supports} that piece of code. Table \ref{table:numcodesupported} shows whether a conversion tool support a certain piece of code.
 
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
-\textbf{Total} & Babel Swift & objc2swift & Swiftify & iSwift \\
+\textbf{Code Piece} & Babel Swift & objc2swift & Swiftify & iSwift \\
 \hline
-X & a & b & c & d \\
+dispatch        & Yes & No  & Yes & Yes \\
+location        & Yes & No  & Yes & No  \\
+prepareforsegue & Yes & No  & Yes & No  \\
+sortusingblock  & Yes & No  & Yes & No  \\
+textfield       & No  & No  & Yes & No  \\
+viewwillappear  & Yes & No  & Yes & No  \\
 \hline
 \end{tabular}
 \end{center}
-\caption{Number of code pieces each conversion tool supported}
+\caption{The support of input source code}
 \label{table:numcodesupported}
 \end{table}
 
@@ -452,13 +457,14 @@ If the converted code and the original code have the same functionality, we say 
 \begin{center}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
-\textbf{Code Piece \#} & Babel Swift & objc2swift & Swiftify & iSwift \\
+\textbf{Code Piece} & Babel Swift & objc2swift & Swiftify & iSwift \\
 \hline
-1 & a & b & c & d \\
-2 & a & b & c & d \\
-3 & a & b & c & d \\
-4 & a & b & c & d \\
-5 & a & b & c & d \\
+dispatch        & a & n/a & c & d \\
+location        & a & n/a & c & n/a \\
+prepareforsegue & a & n/a & c & n/a \\
+sortusingblock  & a & n/a & c & n/a \\
+textfield       & a & n/a & c & n/a \\
+viewwillappear  & a & n/a & c & n/a \\
 \hline
 \end{tabular}
 \end{center}
@@ -474,13 +480,14 @@ Finally, we convert all the test cases by hand. If the machine-converted code is
 \begin{center}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
-\textbf{Code Piece \#} & Babel Swift & objc2swift & Swiftify & iSwift \\
+\textbf{Code Piece} & Babel Swift & objc2swift & Swiftify & iSwift \\
 \hline
-1 & a & b & c & d \\
-2 & a & b & c & d \\
-3 & a & b & c & d \\
-4 & a & b & c & d \\
-5 & a & b & c & d \\
+dispatch        & a & n/a & c & d \\
+location        & a & n/a & c & n/a \\
+prepareforsegue & a & n/a & c & n/a \\
+sortusingblock  & a & n/a & c & n/a \\
+textfield       & a & n/a & c & n/a \\
+viewwillappear  & a & n/a & c & n/a \\
 \hline
 \end{tabular}
 \end{center}

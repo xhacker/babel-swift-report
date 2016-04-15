@@ -546,7 +546,7 @@ viewwillappear  & Yes & n/a & Yes & n/a \\
 
 \section{The Quality of Converted Code}
 
-Finally, we convert all the test cases by hand. If the machine-converted code is \emph{identical} to the hand-converted one, we say that the conversion is \emph{optimal}. We define two pieces of code are \emph{identical} if they have the same parse tree. Table \ref{table:quality} shows the quality of converted code for each conversion tool.
+Finally, we convert all the test cases by hand. If the machine-converted code is \emph{identical} to the hand-converted one, we say that it is a high quality conversion. We define two pieces of code are \emph{identical} if they have the same parse tree. Table \ref{table:quality} shows the quality of converted code for each conversion tool.
 
 \begin{table}[H]
 \begin{center}
@@ -554,12 +554,12 @@ Finally, we convert all the test cases by hand. If the machine-converted code is
 \hline
 \textbf{Code Piece} & Babel Swift & objc2swift & Swiftify & iSwift \\
 \hline
-dispatch        & Not Optimal & n/a & Not Optimal & No  \\
-location        & Optimal & n/a & Not Optimal & n/a \\
-prepareforsegue & Optimal & n/a & Not Optimal & n/a \\
-sortusingblock  & n/a & n/a & Optimal & n/a \\
-textfield       & n/a & n/a & Optimal & n/a \\
-viewwillappear  & Optimal & n/a & Not Optimal & n/a \\
+dispatch        & Not Identical & n/a & Not Identical & Not Identical  \\
+location        & Identical     & n/a & Not Identical & n/a            \\
+prepareforsegue & Identical     & n/a & Not Identical & n/a            \\
+sortusingblock  & n/a           & n/a & Identical     & n/a            \\
+textfield       & n/a           & n/a & Identical     & n/a            \\
+viewwillappear  & Identical     & n/a & Not Identical & n/a            \\
 \hline
 \textbf{Total}  & 3 (50\%) & 0 (0\%) & 2 (33.3\%) & 0 (0\%) \\
 \hline

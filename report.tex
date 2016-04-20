@@ -673,7 +673,8 @@ func startLocationManager() {
 \begin{minted}{objc}
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"showDetailSegue"]) {
-        UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
+        UINavigationController *navController = (UINavigationController *)
+            segue.destinationViewController;
         ViewControllerB *controller = (ViewControllerB *)navController.topViewController;
         controller.isSomethingEnabled = YES;
     }
@@ -775,8 +776,14 @@ override func textFieldDidBeginEditing(textField: UITextField) {
 override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     // register for keyboard notifications
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self,
+        selector: #selector(keyboardWillShow),
+        name: UIKeyboardWillShowNotification,
+        object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self,
+        selector: #selector(keyboardWillHide),
+        name: UIKeyboardWillHideNotification,
+        object: nil)
 }
 \end{minted}
 \end{listing}
